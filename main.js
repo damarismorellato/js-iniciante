@@ -9,7 +9,14 @@ de uma lista além de ser comparado com o tamanho de lista, formando a condiçã
 função anonima é usada quando preciso utilizar um parametro na função, mas não posso chamar a função imediatamente. */
 
 function tocaSom(idAudio) {
-  document.querySelector(idAudio).play();
+  const elemento = document.querySelector(idAudio);
+
+ /*  if (elemento != null && elemento.localName === "audio") { */
+ if(elemento && elemento.localName === "audio") {
+    elemento.play();
+  } else {
+    console.log("Elemento não encontrado");
+  }
 }
 
 const listaSom = document.querySelectorAll(".tecla");
@@ -32,14 +39,20 @@ let contador = 0;
 for (let contador = 0; contador < listaSom.length; contador++) {
   const tecla = listaSom[contador];
   const id = tecla.classList[1];
-
   const idAudio = `#som_${id}`; //template string
 
   tecla.onclick = function () {
     tocaSom(idAudio);
   };
 
-  tecla.onkeydown = function () {
-    tecla.classList.add("ativa");
+  tecla.onkeydown = function (evento) {
+    console.log(evento.code === "Space" || evento.code === "Enter");
+
+    if (evento.code == "Space" || evento.code === "Enter") {
+      tecla.classList.add("ativa");
+    }
+  };
+  tecla.onkeyup = function () {
+    tecla.classList.remove("ativa");
   };
 }
